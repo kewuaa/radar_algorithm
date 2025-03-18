@@ -3,7 +3,7 @@ name = "radar-algorithm"
 version = "0.1.0"
 description = "some radar signal sorting algorithm"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.8"
 dependencies = [
     "numpy>=2.2.1",
 ]
