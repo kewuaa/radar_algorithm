@@ -46,6 +46,10 @@ TARGET_SOURCES(
         src/pri_transform.cpp
         src/pulse_correlation.cpp
 )
+# for `__VA_OPT__` on MSVC
+if (MSVC)
+    TARGET_COMPILE_OPTIONS(${PROJECT_NAME} PUBLIC "/Zc:preprocessor")
+endif()
 
 if (BUILD_PYTHON_EXTENSION)
     ADD_SUBDIRECTORY(python)
