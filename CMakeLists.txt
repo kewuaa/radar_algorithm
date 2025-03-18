@@ -1,0 +1,54 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.15)
+PROJECT(radar_algorithm LANGUAGES CXX)
+
+SET(CMAKE_CXX_STANDARD 20)
+SET(CMAKE_CXX_VISIBILITY_PRESET hidden)
+SET(CMAKE_VISIBILITY_INLINES_HIDDEN TRUE)
+SET(CMAKE_CXX_FLAGS_DEBUG "-O0 -Wall -g -ggdb")
+SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+SET(
+    BUILD_PYTHON_EXTENSION TRUE
+    CACHE BOOL "if to build python extension module"
+)
+
+if (NOT DEFINED CMAKE_BUILD_TYPE)
+    SET(CMAKE_BUILD_TYPE Debug)
+endif()
+
+if (BUILD_PYTHON_EXTENSION)
+    SET(BUILD_SHARED_LIBS FALSE)
+endif()
+
+if (NOT DEFINED BUILD_SHARED_LIBS)
+    SET(BUILD_SHARED_LIBS TRUE)
+endif()
+
+INCLUDE(GenerateExportHeader)
+
+ADD_LIBRARY(${PROJECT_NAME})
+GENERATE_EXPORT_HEADER(
+    ${PROJECT_NAME}
+    EXPORT_FILE_NAME ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}_export.hpp
+)
+TARGET_INCLUDE_DIRECTORIES(
+    ${PROJECT_NAME}
+    PUBLIC
+        include
+        ${CMAKE_CURRENT_BINARY_DIR}
+)
+TARGET_SOURCES(
+    ${PROJECT_NAME}
+    PRIVATE
+        src/pulse_search.cpp
+        src/cdif.cpp
+        src/sdif.cpp
+        src/pri_transform.cpp
+        src/pulse_correlation.cpp
+)
+
+if (BUILD_PYTHON_EXTENSION)
+    ADD_SUBDIRECTORY(python)
+else()
+    INSTALL(TARGETS ${PROJECT_NAME})
+endif()

@@ -1,0 +1,14 @@
+[project]
+name = "radar-algorithm"
+version = "0.1.0"
+description = "some radar signal sorting algorithm"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=2.2.1",
+]
+
+[dependency-groups]
+dev = [
+    "nanobind>=2.5.0",
+]
