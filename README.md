@@ -5,7 +5,8 @@
 + C++ compiler support c++17
 
 ensure python counld be found by cmake, and `nanobind` has been installed.
-use `pip install nanobind` to install it.
+use `pip install nanobind` to install it, if use virtual environment, activate
+it at first.
 
 # build
 
@@ -15,7 +16,7 @@ cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=`pwd`/src
 cmake --build build
 cmake --install build
 
-# build python package wheel
+# build python package wheel at dist/
 pip install build
 python -m build
 # or use uv
