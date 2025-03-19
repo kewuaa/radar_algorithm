@@ -131,8 +131,7 @@ NB_MODULE(PY_MODULE_NAME, m) {
             &PyCDIF::run_from_py,
             nb::arg("toas"),
             nb::arg("max_rank"),
-            nb::arg("bin_width"),
-            nb::rv_policy::move
+            nb::arg("bin_width")
         );
 
     nb::class_<PySDIF>(m, "SDIF")
@@ -142,8 +141,7 @@ NB_MODULE(PY_MODULE_NAME, m) {
             &PySDIF::run_from_py,
             nb::arg("toas"),
             nb::arg("max_rank"),
-            nb::arg("bin_width"),
-            nb::rv_policy::move
+            nb::arg("bin_width")
         );
 
     nb::class_<PyPRITransform>(m, "PRITransform")
@@ -164,6 +162,7 @@ NB_MODULE(PY_MODULE_NAME, m) {
             nb::arg("toas"),
             nb::arg("range"),
             nb::arg("bin_width"),
-            nb::arg("merge_num")
+            nb::arg("merge_num"),
+            nb::rv_policy::move
         );
 }
