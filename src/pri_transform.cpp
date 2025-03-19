@@ -52,7 +52,7 @@ std::optional<double> PRITransform::run(
     }
 
     for (size_t i = 0; i < bin_num; i++) {
-        auto pri = (i+0.5)*bin_width;
+        auto pri = (i+0.5)*bin_width + range.first;
         auto thr = std::max({
             _alpha*duration/pri,
             supress_sub,
