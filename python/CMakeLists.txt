@@ -1,15 +1,9 @@
-# find virtual environment first
-SET(Python_FIND_VIRTUALENV FIRST)
-
 if (CMAKE_VERSION VERSION_LESS 3.18)
     SET(DEV_MODULE Development)
 else()
     SET(DEV_MODULE Development.Module)
 endif()
-FIND_PACKAGE(Python REQUIRED COMPONENTS ${DEV_MODULE})
-
-# update python interpreter to local one
-FIND_PROGRAM(Python_EXECUTABLE python)
+FIND_PACKAGE(Python REQUIRED COMPONENTS ${DEV_MODULE} Interpreter)
 
 EXECUTE_PROCESS(
     COMMAND "${Python_EXECUTABLE}" -m nanobind --cmake_dir
