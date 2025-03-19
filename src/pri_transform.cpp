@@ -32,7 +32,7 @@ std::optional<double> PRITransform::run(
     auto supress_noise = _gamma * std::sqrt(
         duration*std::pow(data.size()/duration, 2)*bin_width
     );
-    auto bin_num = (size_t)std::ceil((range.second-range.first)/bin_width);
+    auto bin_num = (size_t)std::ceil((range.second-range.first)/bin_width)+1;
     std::vector<std::complex<double>> hist(bin_num);
 
     for (size_t head = 0; head < data.size()-1; head++) {
