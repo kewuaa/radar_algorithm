@@ -46,7 +46,7 @@ std::optional<double> PRITransform::run(
             }
             constexpr auto two_pi = std::numbers::pi * 2;
             auto idx = (size_t)std::floor((dtoa-range.first)/bin_width);
-            auto theta = two_pi*(data[tail]/dtoa);
+            auto theta = two_pi*(data[tail]/std::max(dtoa, 1e-9));
             hist[idx] += std::complex<double>(std::cos(theta), std::sin(theta));
         }
     }
