@@ -12,7 +12,7 @@ SET(
     CACHE BOOL "if to build python extension module"
 )
 
-if (NOT DEFINED CMAKE_BUILD_TYPE)
+if (NOT CMAKE_BUILD_TYPE)
     SET(CMAKE_BUILD_TYPE Debug)
 endif()
 
