@@ -27,6 +27,8 @@ endif()
 
 INCLUDE(GenerateExportHeader)
 
+FIND_PACKAGE(spdlog REQUIRED)
+
 ADD_LIBRARY(${PROJECT_NAME})
 GENERATE_EXPORT_HEADER(
     ${PROJECT_NAME}
@@ -47,6 +49,7 @@ TARGET_SOURCES(
         src/pri_transform.cpp
         src/pulse_correlation.cpp
 )
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} PRIVATE spdlog::spdlog)
 # for `__VA_OPT__` on MSVC
 if (MSVC)
     TARGET_COMPILE_OPTIONS(${PROJECT_NAME} PUBLIC "/Zc:preprocessor")

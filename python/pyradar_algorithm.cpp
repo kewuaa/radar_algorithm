@@ -2,6 +2,7 @@
 #include <nanobind/ndarray.h>
 #include <nanobind/stl/pair.h>
 #include <nanobind/stl/optional.h>
+#include <spdlog/spdlog.h>
 
 #include "radar_algorithm_ns.hpp"
 #include "radar_algorithm.hpp"
@@ -114,6 +115,24 @@ public:
 
 
 NB_MODULE(PY_MODULE_NAME, m) {
+    nb::enum_<spdlog::level::level_enum>(m, "LogLevel")
+        .value("trace", spdlog::level::trace)
+        .value("debug", spdlog::level::debug)
+        .value("info", spdlog::level::info)
+        .value("warn", spdlog::level::warn)
+        .value("error", spdlog::level::err)
+        .value("critical", spdlog::level::critical)
+        .value("off", spdlog::level::off);
+
+    m.def(
+        "set_log_level",
+        [](spdlog::level::level_enum level) {
+            auto logger = spdlog::default_logger();
+            logger->set_level(level);
+        },
+        nb::arg("level")
+    );
+
     nb::class_<PyPulseSearcher>(m, "PulseSearcher")
         .def(nb::init<size_t, double, double>(), nb::arg("thr"), nb::arg("toler"), nb::arg("allow_miss_rate"))
         .def(

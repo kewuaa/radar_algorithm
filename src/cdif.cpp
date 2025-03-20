@@ -1,6 +1,8 @@
 #include <vector>
 #include <cmath>
 
+#include <spdlog/spdlog.h>
+
 #include "radar_algorithm_ns.hpp"
 #include "radar_algorithm/cdif.hpp"
 
@@ -9,7 +11,12 @@ RADAR_ALGORITHM_NS_BEGIN()
 
 CDIF::CDIF(double k) noexcept:
     _k(k)
-{}
+{
+    auto logger = spdlog::default_logger();
+    if (_k < 0 or _k > 1) [[unlikely]] {
+        logger->warn("`k` should between (0, 1), but got {}", _k);
+    }
+}
 
 
 std::optional<double> CDIF::run(
@@ -21,6 +28,7 @@ std::optional<double> CDIF::run(
         return std::nullopt;
     }
 
+    auto logger = spdlog::default_logger();
     auto start_toa = data[0];
     auto end_toa = data.back();
     auto duration = end_toa - start_toa;
@@ -37,6 +45,7 @@ std::optional<double> CDIF::run(
     }
 
     for (int rank = 1; rank <= max_rank; rank++) {
+        logger->debug("rank {}", rank);
         for (size_t i = 0; i < data.size()-rank; i++) {
             auto dtoa = data[i+rank] - data[i];
             auto idx = (size_t)std::floor(dtoa / bin_width);

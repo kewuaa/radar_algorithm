@@ -1,6 +1,8 @@
 #include <cmath>
 #include <vector>
 
+#include <spdlog/spdlog.h>
+
 #include "radar_algorithm/pulse_search.hpp"
 
 
@@ -10,7 +12,15 @@ PulseSearcher::PulseSearcher(size_t thr, double toler, double allow_miss_rate) n
     _thr(thr),
     _toler(toler),
     _allow_miss_rate(allow_miss_rate)
-{}
+{
+    auto logger = spdlog::default_logger();
+    if (_allow_miss_rate > 1 or _allow_miss_rate < 0) {
+        logger->warn("`allow_miss_rate` should between (0, 1), but got {}", _allow_miss_rate);
+    }
+    if (_toler < 0) {
+        logger->warn("`toler` must be positive number, but got {}", _toler);
+    }
+}
 
 std::optional<
     std::pair<std::vector<size_t>, std::vector<size_t>>
@@ -20,6 +30,7 @@ std::optional<
         return std::nullopt;
     }
 
+    auto logger = spdlog::default_logger();
     std::vector<size_t> cache;
     std::vector<bool> pulse_set(data.size(), false);
     auto end_toa = data.back();
