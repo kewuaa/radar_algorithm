@@ -56,6 +56,7 @@ std::optional<
         }
 
         auto target = start + pri;
+        std::optional<size_t> founded = std::nullopt;
         size_t idx = start_idx + 1;
         while (idx < data.size() and target < end_toa+_toler) {
             // pulse already extracted
@@ -68,6 +69,13 @@ std::optional<
 
             // no toa satisfied, miss num plus 1, upadte target
             if (toa > target+_toler) {
+                // if founded, store it and update target
+                if (founded) {
+                    target = data[*founded] + pri;
+                    cache.push_back(*founded);
+                    founded = std::nullopt;
+                    continue;
+                }
                 target += pri;
                 miss_num++;
                 // miss number exceed, early break
@@ -76,10 +84,12 @@ std::optional<
                 }
                 continue;
             }
-            // toa satisfied, store it and update target
+            // toa between range
             if (toa > target-_toler) {
-                target = toa + pri;
-                cache.push_back(idx);
+                // if not founded, set it to founded, else compare if it is closer, if so replace to it
+                if (!founded or std::abs(toa-target) < std::abs(data[*founded]-target)) {
+                    founded = idx;
+                }
             }
 
             idx++;
